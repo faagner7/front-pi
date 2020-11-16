@@ -1,0 +1,7 @@
+.container {
+  display: flex;
+  max-width: 1040px;
+  margin: 0 auto;
+  justify-content: center;
+  padding-top: 40px;
+}
