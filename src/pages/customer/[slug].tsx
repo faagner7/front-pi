@@ -40,7 +40,8 @@ export default function Customer() {
         address_number: '',
         birth: '',
         state: '',
-        zip_code: ''
+        zip_code: '',
+        phone: ''
       });
     }
   });
@@ -128,6 +129,16 @@ export default function Customer() {
                   <Grid item xs={12} md={6}>
                     <TextField
                       fullWidth
+                      name="phone"
+                      label="Telefone"
+                      onChange={handleChange}
+                      variant="outlined"
+                      value={values.phone}
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <TextField
+                      fullWidth
                       onChange={handleChange}
                       name="birth"
                       label="Data de Nascimento"
@@ -135,7 +146,7 @@ export default function Customer() {
                       value={values.birth}
                     />
                   </Grid>
-                  <Grid item xs={12} md={6}>
+                  <Grid item xs={12}>
                     <TextField
                       fullWidth
                       name="address"

@@ -7,5 +7,6 @@ export default interface ICustomers {
   address_number: string;
   birth: string;
   city: string;
+  phone: string;
   state: string;
 }

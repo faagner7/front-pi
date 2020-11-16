@@ -113,7 +113,10 @@ const customers: React.FC = () => {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <TableCell>Nome</TableCell>
+                <TableCell component="th" scope="row">
+                  Nome
+                </TableCell>
+                <TableCell align="center">Telefone</TableCell>
                 <TableCell align="center">Data de Nascimento</TableCell>
                 <TableCell align="center">Endereço</TableCell>
                 <TableCell align="center">Cidade/UF</TableCell>
@@ -125,6 +128,7 @@ const customers: React.FC = () => {
               {customers.map(customer => (
                 <TableRow key={customer.id}>
                   <TableCell align="left">{customer.name}</TableCell>
+                  <TableCell align="left">{customer.phone}</TableCell>
                   <TableCell align="center">{customer.birth}</TableCell>
                   <TableCell align="center">
                     {customer.address}
