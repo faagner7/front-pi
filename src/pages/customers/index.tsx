@@ -13,7 +13,9 @@ import {
   Paper,
   IconButton,
   Grid,
-  Button
+  Button,
+  TextField,
+  Input
 } from '@material-ui/core';
 import {
   MdModeEdit as EditIcon,
@@ -37,6 +39,8 @@ const customers: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [customerId, setCustomerId] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [filteredCustomers, setFilteredCustomers] = useState([]);
+  const [search, setSearch] = useState('');
 
   const getCustomersRequest = useCallback(async () => {
     setLoading(true);
@@ -54,6 +58,14 @@ const customers: React.FC = () => {
       setLoading(false);
     })();
   }, []);
+
+  useEffect(() => {
+    setFilteredCustomers(
+      customers.filter(insurance =>
+        insurance.name.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }, [search, customers]);
 
   const handleRemoveCustomer = async () => {
     const response = await removeCustomer(customerId);
@@ -87,13 +99,24 @@ const customers: React.FC = () => {
             style={{
               alignContent: 'center',
               textAlign: 'center',
-              width: '150px'
+              width: '150px',
+              height: '42px !important'
             }}
             onClick={() => router.push('/')}
           >
             <LeftIcon size={16} style={{ marginRight: 8 }} />
             Voltar
           </Button>
+          <Input
+            style={{ width: 250 }}
+            name="search"
+            placeholder="Pesquise por nome.."
+            onChange={e => {
+              setTimeout(() => {
+                setSearch(e.target.value);
+              }, 1000);
+            }}
+          />
           <Button
             variant="outlined"
             onClick={() => router.push('/customer/new')}
@@ -102,67 +125,71 @@ const customers: React.FC = () => {
               textAlign: 'center',
               backgroundColor: '#0d0d0d',
               color: '#fff',
-              width: '150px'
+              width: '150px',
+              height: '42px'
             }}
           >
             <AddIcon style={{ marginRight: 12 }} size={16} />
             Adicionar
           </Button>
         </Grid>
-        <TableContainer component={Paper}>
-          <Table className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Nome
-                </TableCell>
-                <TableCell align="center">Telefone</TableCell>
-                <TableCell align="center">Data de Nascimento</TableCell>
-                <TableCell align="center">Endereço</TableCell>
-                <TableCell align="center">Cidade/UF</TableCell>
-                <TableCell align="center">CEP</TableCell>
-                <TableCell align="right"></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {customers.map(customer => (
-                <TableRow key={customer.id}>
-                  <TableCell align="left">{customer.name}</TableCell>
-                  <TableCell align="left">{customer.phone}</TableCell>
-                  <TableCell align="center">{customer.birth}</TableCell>
-                  <TableCell align="center">
-                    {customer.address}
-                    {', '}
-                    {customer.address_number}
+        <Grid container style={{ marginTop: 60 }}>
+          <TableContainer component={Paper}>
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <TableCell component="th" scope="row">
+                    Nome
                   </TableCell>
-                  <TableCell align="center">
-                    {customer.city}
-                    {'/'}
-                    {customer.state}
-                  </TableCell>
-                  <TableCell align="center">{customer.zip_code}</TableCell>
-                  <TableCell align="center">
-                    <IconButton
-                      onClick={() => {
-                        router.push(`/customer/${customer.id}`);
-                      }}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => {
-                        setCustomerId(customer.id);
-                        setOpenDialog(true);
-                      }}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </TableCell>
+                  <TableCell align="center">Telefone</TableCell>
+                  <TableCell align="center">Data de Nascimento</TableCell>
+                  <TableCell align="center">Endereço</TableCell>
+                  <TableCell align="center">Cidade/UF</TableCell>
+                  <TableCell align="center">CEP</TableCell>
+                  <TableCell align="right"></TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {filteredCustomers.map(customer => (
+                  <TableRow key={customer.id}>
+                    <TableCell align="left">{customer.name}</TableCell>
+                    <TableCell align="left">{customer.phone}</TableCell>
+                    <TableCell align="center">{customer.birth}</TableCell>
+                    <TableCell align="center">
+                      {customer.address}
+                      {', '}
+                      {customer.address_number}
+                    </TableCell>
+                    <TableCell align="center">
+                      {customer.city}
+                      {'/'}
+                      {customer.state}
+                    </TableCell>
+                    <TableCell align="center">{customer.zip_code}</TableCell>
+                    <TableCell align="center">
+                      <IconButton
+                        onClick={() => {
+                          router.push(`/customer/${customer.id}`);
+                        }}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => {
+                          setCustomerId(customer.id);
+                          setOpenDialog(true);
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Grid>
+
         {loading && <OverlayLoading />}
         <ToastContainer />
         <ConfirmDialog
