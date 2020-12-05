@@ -17,7 +17,8 @@ export default function Home() {
       </Head>
       <Container>
         <div style={{ flexDirection: 'column', textAlign: 'center' }}>
-          <h2>Projeto Integrador</h2>
+          <h2>Projeto Integrador IV-B</h2>
+          <h4>Fagner Rodrigues</h4>
           <div>
             <Button
               variant="outlined"
