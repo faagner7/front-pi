@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useMount } from 'react-use';
 import { Formik } from 'formik';
@@ -20,12 +19,7 @@ export default function Customer() {
   const { slug } = router.query;
   const isEdit = slug !== 'new';
 
-  const {
-    getCustomer,
-    addCustomer,
-    updateCustomer,
-    getCustomers
-  } = customersService;
+  const { getCustomer, addCustomer, updateCustomer } = customersService;
 
   useMount(() => {
     if (isEdit) {
